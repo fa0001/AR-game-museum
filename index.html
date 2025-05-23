@@ -1,0 +1,206 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+    <script src="./component.js"></script>
+  </head>
+
+  <body>
+    
+    <!-------------------------------------- SCREEN 1---------------------------------------->
+    <div class="splash-screen" id="splashScreen">
+      <div class="splash-background"></div>
+      <div class="splash-content">
+        <!-- GAMBAR A: ganti link di bawah ini setelah src dan tanda petik dengan URL gambar logo museum atau icon game-->
+        <!-- pastikan tanda petik ada di depan dan belakang URL -->
+        <img
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/logogame?v=1727361736633"
+          alt="logo museum"
+          width="150"
+          height="150"
+        />
+
+        <!-- Text A: Ganti judul di baris di bawah ini -->
+        <h1>Treasure Hunt di Museum</h1>
+        <!-- Text B: Ganti teks tentang goals game Anda di bawah ini, di antara <p> dan </p> -->
+        <p>
+          Temukan 3 koin yang tersembunyi di dalam museum! Jelajahi museum dan
+          scan obyek yang dipamerkan untuk mendapatkan koin tersebut.
+        </p>
+        <button class="start-button" id="startButton">Start Game</button>
+        <!-- Audio A: Suara yang muncul saat game dimulai. Src dapat diganti dengan URL audio file pilihan Anda -->
+        <audio
+          id="startGame"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/treasure-chest-magic-reward-gfx-sounds-1-00-03.mp3?v=1727361072315"
+        ></audio>
+      </div>
+    </div>
+
+    <!-- Top bar with button, score, and clue trackers -->
+    <div class="top-bar">
+      <button id="showImageButton">Petunjuk</button>
+      <div id="scoreTracker">Score: 0</div>
+      <!-- Text C: Ganti kata "koin" dengan nama objek apa yang dicari di bawah ini -->
+      <div id="coinTracker">Koin tersisa: 3</div>
+    </div>
+
+    <!-------------------------- SCREEN PETUNJUK --------------------------->
+    <!-- Container for the PNG image clue -->
+    <div id="imageContainer">
+      <!-- Ganti Gambar Petunjuk dengan image lain dg cara memasukkan URL image yg sudah Anda upload -->
+      <img
+        src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/instant.jpg?v=1724054734644"
+        alt="Popup Image"
+      />
+      <button id="closeImageButton">X</button>
+    </div>
+
+    <!-- UI screen for claiming treasure -->
+    <div id="claimScreen">
+      <!-- Text D: Ganti di bawah ini -->
+      <h2>Koin berhasil ditemukan</h2>
+      <!-- Text E: Ganti tulisan di bawah ini -->
+      <button id="claimButton">Ambil koin</button>
+    </div>
+
+    <!-- Win Screen -->
+    <div id="winScreen" class="fullscreen-overlay">
+      <div class="win-content">
+        <!-- TEXT H Ganti di bawah ini -->
+        <h2>You Win!</h2>
+        <!-- TEXT I Ganti di bawah ini -->
+        <p>
+          Semua koin berhasil ditemukan. Lanjutkan penjelajahanmu di museum ini.
+        </p>
+        <!-- GAMBAR D: Ganti src dg link URL di bawah ini -->
+        <img
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/depositphotos_51357463-stock-illustration-old-woman.jpg?v=1727358526094"
+          alt="Victory Image"
+          class="victory-image"
+        />
+      </div>
+    </div>
+
+    <!-------------------------HOME: AR SCENE----------------------------------->
+    <!-- TARGET.MIND: Ganti URL target image di bawah ini dg URL target yg sudah Anda upload. Titik koma ; di akhir jangan dihapus---->
+    <a-scene
+      mindar-image="imageTargetSrc: https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/targets.mind?v=1724048630449;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-camera
+        position="0 0 0"
+        look-controls="enabled: false"
+        cursor="fuse: false; rayOrigin: mouse;"
+        raycaster="far: ${customFields.libVersion}; objects: .clickable"
+      ></a-camera>
+
+      <a-assets>
+        <!----- GAMBAR ------>
+        <!-- Gambar C: Ganti gambar yang akan muncul jika target ditemukan dg mengganti URL src di bawah ini -->
+        <img
+          id="image1"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/instant%20(1).jpg?v=1727358525546"
+        />
+
+        <!-- Model 3D --- Ganti URL objek yg ingin dikoleksi setelah src di bawah ini dengan URL file yang sudah Anda upload -->
+        <a-asset-item
+          id="model1"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/coins.glb?v=1724045695804"
+        ></a-asset-item>
+        <!-- Jika ingin menambah model 3D yg ingin dimunculkan,silakan copas asset item di atas dan ganti id menjadi model2 dst -->
+
+        <!-------------------------------- SOUND EFFECTS------------------------------------------>
+        <!-- URL dapat diganti sesuai kebutuhan-->
+        <!-- Audio B: Suara yang muncul saat buka-tutup petunjuk dan klaim "koin". Ganti di bawah ini -->
+        <audio
+          id="sound1"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/cartoon-paint-splash-gfx-sounds-1-00-01.mp3?v=1724049124730"
+        ></audio>
+        <!-- Audio C: suara yg muncul saat pemain berhasil menyelesaikan permainan. Ganti di bawah ini -->
+        <audio
+          id="sound2"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/ta-da-brass-band-soundroll-1-00-04.mp3?v=1727360806465"
+        ></audio>
+        <!-- Audio D: suara yg muncul saat target terbaca kamera. Ganti di bawah ini -->
+        <audio
+          id="sound3"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/Fruit%20collect%201.wav?v=1727361935666"
+        ></audio>
+        <!-- Audio E: Suara yang muncul saat target 1 ditemukan. Ganti di bawah ini -->
+        <audio
+          id="soundInfo1"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/VOpantun.mp3?v=1727404294747"
+        ></audio>
+        <!-- Audio F: Suara yang muncul saat target 2 ditemukan. Ganti di bawah ini -->
+        <audio
+          id="soundInfo2"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/mixkit-wolves-pack-howling-1776.wav?v=1727406644048"
+        ></audio>
+        <!-- Audio G: Suara yang muncul saat target 3 ditemukan. Ganti di bawah ini -->
+        <audio
+          id="soundInfo3"
+          src="https://cdn.glitch.global/9987f367-3f68-43f6-a2c7-6910cccb1d2a/Balloon%20start%20riding%201.wav?v=1727416284642"
+        ></audio>
+      </a-assets>
+
+      <!----------------- TARGET 1 ---------------------->
+      <a-entity id="target1" mindar-image-target="targetIndex: 0">
+        <a-gltf-model
+          id="example-model1"
+          src="#model1"
+          scale="0.5 0.5 0.5"
+          rotation="0 -90 0"
+          animation-mixer="clip: *; loop: repeat; repetitions: Infinity;"
+        ></a-gltf-model>
+        <!--- TEXT F:  GANTI VALUE TEXT F DI BAWAH INI -->
+        <a-text
+          value="Bambu untuk kerajinan anyaman. Dihias dengan beraneka warna. Mari selalu jaga ucapan. Hindari pula sikap semena-mena."
+          wrap-count="24"
+          align="center"
+          width="2"
+          color="white"
+          position="0 1.6 0"
+        ></a-text>
+      </a-entity>
+
+      <!-- Target 2-->
+      <a-entity id="target2" mindar-image-target="targetIndex: 1">
+        <a-gltf-model
+          id="example-model2"
+          src="#model1"
+          scale="0.5 0.5 0.5"
+          rotation="0 -90 0"
+          animation-mixer="clip: *; loop: repeat; repetitions: Infinity;"
+        ></a-gltf-model>
+        <!--- Gambar yg muncul untuk Target 2 -->
+        <a-image src="#image1" scale="2 2 2" position="0 2 0"></a-image>
+      </a-entity>
+
+      <!-- Target 3-->
+      <a-entity id="target3" mindar-image-target="targetIndex: 2">
+        <a-gltf-model
+          id="example-model3"
+          src="#model1"
+          scale="0.5 0.5 0.5"
+          rotation="0 -90 0"
+          animation-mixer="clip: *; loop: repeat; repetitions: Infinity;"
+        ></a-gltf-model>
+        <!--- TEXT G: GANTI VALUE TEXT G DI BAWAH INI -->
+        <a-text
+          value="Waktu tak kan bisa diulang. Jangan kau habiskan waktumu bersama dengan orang hanya menyakitimu karena kamu akan menyesal kemudian."
+          wrap-count="24"
+          align="center"
+          width="2"
+          color="yellow"
+          position="0 1.6 0"
+        ></a-text>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
