@@ -1,2 +1,2 @@
 # AR-game-museum
-WebAR game 
+WebAR game imported from a Glitch project. 
