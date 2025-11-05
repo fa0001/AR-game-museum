@@ -1,4 +1,8 @@
+(Imported from Glitch)
+
 # Augmented Reality Games for Museum
+
+Paper: [Augmented Reality Workflows and Prototype Tools for Museums](https://diglib.eg.org/items/cc33281c-0aaf-4385-aa41-85ea8a9af126)
 
 Remix this code to build your own treasure hunt game in the museum.
 
